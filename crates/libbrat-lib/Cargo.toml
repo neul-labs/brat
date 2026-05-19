@@ -1,0 +1,16 @@
+[package]
+name = "libbrat-lib"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+libbrat-engine = { workspace = true }
+libbrat-config = { workspace = true }
+libbrat-kb = { workspace = true }
+libbrat-swimlane = { workspace = true }
+libbrat-workflow = { workspace = true }
+libbrat-session = { workspace = true }
+libbrat-worktree = { workspace = true }
+libbrat-grite = { workspace = true }

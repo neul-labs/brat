@@ -6,7 +6,7 @@
 use std::collections::HashSet;
 
 use libbrat_config::InterventionsConfig;
-use libbrat_gritee::{GriteeClient, SessionStatus};
+use libbrat_grite::{GriteeClient, SessionStatus};
 use libbrat_worktree::WorktreeManager;
 use serde::Serialize;
 

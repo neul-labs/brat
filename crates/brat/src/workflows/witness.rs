@@ -8,7 +8,7 @@ use std::time::Duration;
 
 use libbrat_config::BratConfig;
 use libbrat_engine::{Engine, SpawnSpec};
-use libbrat_gritee::{GriteeClient, SessionRole, SessionStatus, SessionType, Task, TaskStatus};
+use libbrat_grite::{GriteeClient, SessionRole, SessionStatus, SessionType, Task, TaskStatus};
 use libbrat_session::{MonitorConfig, MonitorHandle, SessionMonitor};
 use libbrat_worktree::WorktreeManager;
 use serde::Serialize;

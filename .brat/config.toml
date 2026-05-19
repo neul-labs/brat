@@ -1,0 +1,80 @@
+[roles]
+mayor_enabled = true
+witness_enabled = true
+refinery_enabled = true
+deacon_enabled = true
+
+[bratd]
+enabled = true
+start_gritee_daemon = false
+
+[swarm]
+max_polecats = 6
+worktree_root = ".gritee/worktrees"
+engine = "codex"
+
+[engine]
+spawn_timeout_ms = 60000
+send_timeout_ms = 5000
+tail_timeout_ms = 10000
+stop_timeout_ms = 10000
+health_timeout_ms = 5000
+spawn_retry = 1
+
+[refinery]
+max_parallel_merges = 2
+rebase_strategy = "rebase"
+required_checks = ["tests"]
+merge_retry_limit = 2
+
+[locks]
+policy = "warn"
+
+[tmux]
+session = "brat"
+windows = [
+    "mayor",
+    "witness",
+    "refinery",
+    "deacon",
+    "sessions",
+]
+
+[repos]
+roots = []
+
+[logs]
+retention_days = 7
+
+[kb]
+enabled = true
+tenant_prefix = "brat-"
+mirror_path = ".brat/kb"
+
+[swimlanes]
+enabled = true
+max_count = 4
+teams = [
+    "backend",
+    "frontend",
+    "tests",
+    "docs",
+]
+
+[swimlanes.engines]
+backend = "codex"
+docs = "claude"
+tests = "codex"
+frontend = "claude"
+
+[bootstrap]
+enabled = true
+max_iterations = 5
+max_files = 10000
+timeout_secs = 300
+require_human_approval = true
+
+[interventions]
+heartbeat_interval_ms = 30000
+stale_session_ms = 300000
+blocked_task_ms = 86400000

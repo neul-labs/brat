@@ -36,9 +36,12 @@ fn should_auto_start_daemon(cmd: &Command) -> bool {
             | Command::Task(_)
             | Command::Context(_)
             | Command::Session(_)
-            | Command::Mayor(_)
+            | Command::Meta(_)
             | Command::Witness(_)
             | Command::Refinery(_)
+            | Command::Kb(_)
+            | Command::Bootstrap(_)
+            | Command::Skill(_)
     )
 }
 
@@ -55,7 +58,7 @@ async fn run_command(cli: &Cli) -> Result<(), BratError> {
     }
 
     match &cli.command {
-        Command::Init(args) => commands::init::run(cli, args),
+        Command::Init(args) => commands::init::run(cli, args).await,
         Command::Status(args) => commands::status::run(cli, args),
         Command::Convoy(cmd) => commands::convoy::run(cli, cmd),
         Command::Task(cmd) => commands::task::run(cli, cmd),
@@ -67,8 +70,12 @@ async fn run_command(cli: &Cli) -> Result<(), BratError> {
         Command::Doctor(args) => commands::doctor::run(cli, args),
         Command::Api(args) => run_api_server(args).await,
         Command::Workflow(cmd) => commands::workflow::run(cli, cmd),
-        Command::Mayor(cmd) => commands::mayor::run(cli, cmd).await,
+        Command::Meta(cmd) => commands::meta::run(cli, cmd).await,
         Command::Daemon(cmd) => commands::daemon::run(cli, cmd).await,
+        Command::Kb(cmd) => commands::kb::run(cli, cmd),
+        Command::Bootstrap(cmd) => commands::bootstrap::run(cli, cmd),
+        Command::Skill(cmd) => commands::skill::run(cli, cmd),
+        Command::Mcp(args) => commands::mcp::run(cli, args).await,
     }
 }
 

@@ -1,0 +1,20 @@
+[package]
+name = "brat-skills"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.75"
+repository = "https://github.com/neul-labs/brat"
+description = "Embedded Claude Code skills for brat software factory roles"
+
+[dependencies]
+rust-embed = { workspace = true }
+serde = { workspace = true }
+serde_yaml = { workspace = true }
+blake3 = "1.5"
+thiserror = { workspace = true }
+dirs = "5"
+
+
+[dev-dependencies]
+tempfile = "3.10"

@@ -5,7 +5,7 @@
 
 use std::sync::Arc;
 
-use libbrat_gritee::GriteeClient;
+use libbrat_grite::GriteeClient;
 
 use super::error::WorkflowError;
 

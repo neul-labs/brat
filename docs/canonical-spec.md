@@ -15,6 +15,17 @@ All IDs are ASCII and lowercase where applicable.
 
 Canonical labels are defined in `docs/label-glossary.md`. The harness must only use labels from that list.
 
+### Phase labels
+
+- `phase:product`
+- `phase:architecture`
+- `phase:implementation`
+- `phase:review`
+- `phase:merge`
+- `phase:memory`
+- `gate:open`
+- `gate:closed`
+
 ## Issue schemas
 
 ### Convoy issue
@@ -98,6 +109,7 @@ Use labels `to:<actor_id>`, `needs-ack`, `ack:<actor_id>`, `urgency:low|med|high
 - Grite exports: `.grite/`
 - Brat worktrees: `.grite/worktrees/polecat-<n>`
 - Brat config: `.brat/config.toml`
+- KB mirror: `.brat/kb/product.md`, `.brat/kb/architecture.md`
 - Session logs: `.grite/logs/<session_id>.log` (hashed as `sha256:<hex>` in `last_output_ref`)
 
 ## Daemon semantics

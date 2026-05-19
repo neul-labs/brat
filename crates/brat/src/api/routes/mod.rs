@@ -1,10 +1,14 @@
 //! API route definitions.
 
+mod bootstrap;
 mod convoys;
 mod events;
 mod health;
-mod mayor;
+mod kb;
+mod meta;
+mod pipeline;
 mod repos;
+mod review;
 mod sessions;
 mod status;
 mod tasks;

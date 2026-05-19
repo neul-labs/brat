@@ -1,7 +1,7 @@
 use std::io;
 
 use libbrat_config::ConfigError;
-use libbrat_gritee::GriteeError;
+use libbrat_grite::GriteeError;
 
 use crate::workflows::WorkflowError;
 

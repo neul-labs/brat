@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use chrono::Utc;
 use uuid::Uuid;
 
-use libbrat_gritee::{DependencyType, GriteeClient};
+use libbrat_grite::{DependencyType, GriteeClient};
 
 use crate::error::WorkflowError;
 use crate::parser::WorkflowParser;

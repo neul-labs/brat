@@ -21,6 +21,8 @@ hex.workspace = true
 async-trait.workspace = true
 uuid.workspace = true
 rand.workspace = true
+walkdir = "2.5"
+libbrat-kb = { workspace = true }
 
 [target.'cfg(unix)'.dependencies]
 libc.workspace = true

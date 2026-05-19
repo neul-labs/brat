@@ -110,6 +110,9 @@ pub async fn run_server(config: ServerConfig) -> Result<(), Box<dyn std::error::
         });
     }
 
+    // Spawn KB filesystem watcher
+    crate::api::watcher::spawn_kb_watchers(state.clone());
+
     // Run server with graceful shutdown
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app)

@@ -1,12 +1,16 @@
+pub mod bootstrap;
 pub mod context;
 pub mod convoy;
 pub mod daemon;
 pub mod doctor;
 pub mod init;
+pub mod kb;
 pub mod lock;
-pub mod mayor;
+pub mod meta;
+pub mod mcp;
 pub mod refinery;
 pub mod session;
+pub mod skill;
 pub mod status;
 pub mod task;
 pub mod witness;

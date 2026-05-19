@@ -1,7 +1,7 @@
 //! Workflow-specific error types.
 
 use libbrat_engine::EngineError;
-use libbrat_gritee::GriteeError;
+use libbrat_grite::GriteeError;
 use libbrat_session::SessionMonitorError;
 use libbrat_worktree::WorktreeError;
 use thiserror::Error;

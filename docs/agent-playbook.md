@@ -19,6 +19,15 @@ Run at the beginning of each session:
 
 Select exactly one issue at a time.
 
+## Auto-bootstrap
+
+When working in an existing repository:
+
+- Check if bootstrap has run: `brat bootstrap status --json`
+- Run bootstrap if needed: `brat bootstrap run --json`
+- Review inconsistencies in UI or via `brat kb inconsistencies --json`
+- Edit KB notes to resolve inconsistencies and improve consistency score
+
 ## Shared repo note
 
 If multiple agents share the same `.git` directory, each agent must use a separate data directory. Set `GRIT_HOME`, `--data-dir`, or `--actor <id>` so the local DB is not shared between processes.
@@ -40,6 +49,7 @@ After each milestone, post a checkpoint comment:
 - What changed
 - Why
 - Tests run
+- KB notes updated (product/architecture/memory)
 
 ## Locks
 
@@ -51,6 +61,14 @@ Acquire a lock when editing shared or risky areas:
 
 If a lock is unavailable, pick another issue or coordinate in comments.
 
+## Consistency
+
+Before merging, verify consistency:
+
+- `brat consistency check --json` (score should be ≥ 80)
+- Review inconsistencies: `brat kb inconsistencies --json`
+- Update KB notes if product/architecture mismatch found
+
 ## Finish
 
 Before closing:
@@ -58,3 +76,4 @@ Before closing:
 - Post verification notes (commands + expected output)
 - `brat task close <ID> --reason done --json`
 - `brat sync --push --json`
+- Write memory note: `brat kb create --type memory --title "..." --body "..."`

@@ -4,7 +4,7 @@ use std::time::Duration;
 
 use chrono::Utc;
 use libbrat_config::InterventionsConfig;
-use libbrat_gritee::{
+use libbrat_grite::{
     Convoy, GriteeClient, Session, SessionStatus as GriteSessionStatus, Task,
     TaskStatus as GriteTaskStatus,
 };

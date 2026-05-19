@@ -1,7 +1,7 @@
 //! Error types for session monitor operations.
 
 use libbrat_engine::EngineError;
-use libbrat_gritee::GriteeError;
+use libbrat_grite::GriteeError;
 use libbrat_worktree::WorktreeError;
 use thiserror::Error;
 

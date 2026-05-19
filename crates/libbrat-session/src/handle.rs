@@ -1,7 +1,7 @@
 //! Handle for controlling a monitored session.
 
 use libbrat_engine::StopMode;
-use libbrat_gritee::SessionStatus;
+use libbrat_grite::SessionStatus;
 use tokio::sync::{mpsc, oneshot};
 
 use crate::error::SessionMonitorError;

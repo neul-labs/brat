@@ -6,7 +6,7 @@ use std::sync::Arc;
 use std::time::{Duration, Instant};
 
 use libbrat_config::BratConfig;
-use libbrat_gritee::GriteeClient;
+use libbrat_grite::GriteeClient;
 use libbrat_worktree::WorktreeManager;
 use serde::Serialize;
 use tokio::sync::{broadcast, RwLock};
@@ -56,6 +56,12 @@ pub enum BratEvent {
         task_id: String,
         retry_at: String,
         attempt: u32,
+    },
+    /// KB mirror synced from filesystem.
+    KbSynced {
+        repo_id: String,
+        drifted: Vec<String>,
+        reconciled: Vec<String>,
     },
 }
 

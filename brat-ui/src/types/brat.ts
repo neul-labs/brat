@@ -7,6 +7,15 @@ export type SessionStatus = 'spawned' | 'ready' | 'running' | 'handoff' | 'exit'
 // Convoy status type
 export type ConvoyStatus = 'active' | 'paused' | 'complete' | 'failed';
 
+// Pipeline phase type
+export type Phase = 'product' | 'architecture' | 'implementation' | 'review' | 'merge' | 'memory';
+
+// Inconsistency severity
+export type Severity = 'low' | 'medium' | 'high';
+
+// Inconsistency kind
+export type InconsistencyKind = 'MissingArchitecture' | 'OrphanComponent' | 'MissingTests' | 'MissingDocs' | 'Mismatch';
+
 // Task counts by status
 export interface TaskCounts {
   queued: number;
@@ -72,26 +81,26 @@ export interface Repo {
   name: string;
 }
 
-// Mayor status
-export interface MayorStatus {
+// Meta status
+export interface MetaStatus {
   active: boolean;
   session_id?: string;
 }
 
-// Mayor message for chat display
-export interface MayorMessage {
-  type: 'user' | 'mayor';
+// Meta message for chat display
+export interface MetaMessage {
+  type: 'user' | 'meta';
   content: string;
   timestamp?: number;
 }
 
-// Mayor ask response
-export interface MayorAskResponse {
+// Meta ask response
+export interface MetaAskResponse {
   response: string[];
 }
 
-// Mayor history response
-export interface MayorHistoryResponse {
+// Meta history response
+export interface MetaHistoryResponse {
   lines: string[];
 }
 
@@ -122,6 +131,68 @@ export interface CreateTaskRequest {
 // Update task request
 export interface UpdateTaskRequest {
   status: string;
+}
+
+// Bootstrap result
+export interface BootstrapResult {
+  consistent: boolean;
+  score: number;
+  inconsistency_count: number;
+  iterations: number;
+}
+
+// Consistency check result
+export interface ConsistencyCheckResult {
+  score: number;
+  product_arch_coverage: number;
+  arch_product_traceability: number;
+  file_component_mapping: number;
+  test_feature_coverage: number;
+  doc_component_parity: number;
+}
+
+// Inconsistency
+export interface Inconsistency {
+  kind: InconsistencyKind;
+  severity: Severity;
+  description: string;
+  suggested_fix: string;
+  affected_product_notes: string[];
+  affected_arch_notes: string[];
+}
+
+// KB search result
+export interface KbSearchResult {
+  slug: string;
+  title: string;
+  note_type: string;
+  score: number;
+}
+
+// KB note
+export interface KbNote {
+  slug: string;
+  title: string;
+  body: string;
+  note_type: string;
+  tags: string[];
+}
+
+// Pipeline phase status
+export interface PhaseStatus {
+  phase: Phase;
+  status: 'pending' | 'in_progress' | 'blocked' | 'complete';
+  notes_created: number;
+  gate_status: 'open' | 'closed';
+}
+
+// Review task
+export interface ReviewTask {
+  task_id: string;
+  title: string;
+  phase: Phase;
+  status: string;
+  approved: boolean | null;
 }
 
 // WebSocket event types (from backend BratEvent enum)

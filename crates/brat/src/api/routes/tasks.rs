@@ -4,7 +4,7 @@ use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::routing::{get, patch, post};
 use axum::{Json, Router};
-use libbrat_gritee::TaskStatus;
+use libbrat_grite::TaskStatus;
 use serde::{Deserialize, Serialize};
 
 use crate::api::state::DaemonState;

@@ -32,16 +32,21 @@
 //! ```
 
 pub mod aider;
+pub mod bootstrap;
 pub mod claude_code;
 pub mod codex;
+pub mod consistency;
 pub mod continue_dev;
 pub mod copilot;
 pub mod engine;
 pub mod error;
 pub mod gemini;
-pub mod mayor;
+pub mod infer_architecture;
+pub mod infer_product;
+pub mod meta;
 pub mod opencode;
 pub mod platform;
+pub mod scan;
 pub mod shell;
 
 // Re-export public API
@@ -51,7 +56,8 @@ pub use codex::CodexEngine;
 pub use continue_dev::ContinueEngine;
 pub use copilot::CopilotEngine;
 pub use gemini::GeminiEngine;
-pub use mayor::MayorEngine;
+pub use meta::MetaEngine;
+pub use meta::{infer_architecture_notes, infer_product_notes, scan_codebase};
 pub use opencode::OpenCodeEngine;
 pub use engine::{
     Engine, EngineHealth, EngineInput, SessionHandle, SpawnResult, SpawnSpec, StopMode,

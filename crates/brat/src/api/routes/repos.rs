@@ -11,8 +11,12 @@ use serde::{Deserialize, Serialize};
 use crate::api::state::{DaemonState, RepoContext};
 use std::sync::Arc;
 
+use super::bootstrap;
 use super::convoys;
-use super::mayor;
+use super::kb;
+use super::meta;
+use super::pipeline;
+use super::review;
 use super::sessions;
 use super::status;
 use super::tasks;
@@ -123,5 +127,9 @@ fn repo_scoped_routes() -> Router<DaemonState> {
         .merge(convoys::routes())
         .merge(tasks::routes())
         .merge(sessions::routes())
-        .merge(mayor::routes())
+        .merge(meta::routes())
+        .merge(kb::routes())
+        .merge(bootstrap::routes())
+        .merge(review::routes())
+        .merge(pipeline::routes())
 }

@@ -6,7 +6,7 @@ use std::sync::Arc;
 use std::time::Instant;
 
 use libbrat_engine::{Engine, SessionHandle, SpawnSpec, StopMode};
-use libbrat_gritee::{
+use libbrat_grite::{
     generate_session_id, GriteeClient, SessionRole, SessionStatus, SessionType, StateMachine,
 };
 use libbrat_worktree::WorktreeManager;

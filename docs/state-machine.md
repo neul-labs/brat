@@ -8,6 +8,7 @@ This document specifies the lifecycle state machines used by the Brat harness an
 - Idempotent transitions (safe to replay)
 - Recoverable after crash or restart
 - Observable in the control room via Grite queries
+- Consistency-gated phase transitions for the software factory pipeline
 
 ## Session lifecycle
 
@@ -38,6 +39,38 @@ This document specifies the lifecycle state machines used by the Brat harness an
 - Labels are updated to reflect the current state
 - Exit transition includes exit code, reason, last output hash or snippet
 
+## Pipeline phase lifecycle
+
+### Phases
+
+- `product`: Meta agent writing product notes
+- `architecture`: Meta agent writing architecture notes
+- `implementation`: Witness spawning agents in swimlanes
+- `review`: Refinery assessing, requesting human approval
+- `merge`: Refinery merging approved work
+- `memory`: Agents writing memory notes
+
+### Phase transitions (consistency-gated)
+
+- `product -> architecture`: allowed when `product_arch_coverage` ≥ threshold
+- `architecture -> implementation`: allowed when `arch_product_traceability` ≥ threshold
+- `implementation -> review`: allowed when `test_feature_coverage` and `doc_component_parity` ≥ threshold
+- `review -> merge`: allowed when human approves (via UI or MCP)
+- `merge -> memory`: automatic after successful merge
+
+### Gate failure behavior
+
+- Gate closed: phase remains in current state
+- Inconsistencies are surfaced to humans via UI and MCP
+- Humans edit KB notes; Meta Agent re-runs consistency check
+- Score updates in real-time; gate opens when threshold met
+
+### Persistence in Grite
+
+- Phase transitions recorded as comments on the convoy issue
+- Consistency score recorded at each transition
+- Gate status (open/closed) stored as a label
+
 ## Role lifecycle
 
 ### States
@@ -58,23 +91,3 @@ This document specifies the lifecycle state machines used by the Brat harness an
 
 - Role state transitions are recorded in a dedicated issue or log thread
 - Health summaries are posted at bounded intervals
-
-## Reconciliation rules
-
-On harness startup:
-
-1. List active engine sessions for each role
-2. Read expected sessions from Grite comments/labels
-3. Reconcile:
-   - Adopt orphaned sessions and post a recovery note
-   - Mark missing sessions as `exit` with best-known info
-   - Re-emit a `ready` comment if a session is running but missing state
-
-Reconciliation should be safe to run multiple times.
-
-## Label conventions (recommended)
-
-- Session state: `session:spawned|ready|running|handoff|exit`
-- Session type: `session:polecat|crew`
-- Role state: `role:idle|active|degraded|recovering`
-- Health: `health:ok|warn|fail`

@@ -1,0 +1,20 @@
+[package]
+name = "libbrat-swimlane"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.75"
+repository = "https://github.com/neul-labs/brat"
+description = "Swimlane scheduler for parallel agent teams"
+
+[dependencies]
+libbrat-engine = { workspace = true }
+libbrat-config = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+tempfile = "3.10"

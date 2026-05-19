@@ -35,6 +35,15 @@ pub struct BratConfig {
     /// Log retention settings.
     pub logs: LogsConfig,
 
+    /// Knowledge base settings.
+    pub kb: KbConfig,
+
+    /// Swimlanes settings.
+    pub swimlanes: SwimlanesConfig,
+
+    /// Bootstrap settings.
+    pub bootstrap: BootstrapConfig,
+
     /// Intervention thresholds.
     pub interventions: InterventionsConfig,
 }
@@ -52,6 +61,9 @@ impl Default for BratConfig {
             repos: ReposConfig::default(),
             logs: LogsConfig::default(),
             interventions: InterventionsConfig::default(),
+            kb: KbConfig::default(),
+            swimlanes: SwimlanesConfig::default(),
+            bootstrap: BootstrapConfig::default(),
         }
     }
 }
@@ -243,6 +255,82 @@ impl Default for InterventionsConfig {
     }
 }
 
+/// Knowledge base settings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct KbConfig {
+    pub enabled: bool,
+    pub tenant_prefix: String,
+    pub mirror_path: String,
+    pub min_consistency_score: u8,
+}
+
+impl Default for KbConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            tenant_prefix: "brat-".to_string(),
+            mirror_path: ".brat/kb".to_string(),
+            min_consistency_score: 80,
+        }
+    }
+}
+
+/// Swimlanes settings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct SwimlanesConfig {
+    pub enabled: bool,
+    pub max_count: u32,
+    pub teams: Vec<String>,
+    pub engines: std::collections::HashMap<String, String>,
+}
+
+impl Default for SwimlanesConfig {
+    fn default() -> Self {
+        let mut engines = std::collections::HashMap::new();
+        engines.insert("backend".to_string(), "codex".to_string());
+        engines.insert("frontend".to_string(), "claude".to_string());
+        engines.insert("tests".to_string(), "codex".to_string());
+        engines.insert("docs".to_string(), "claude".to_string());
+
+        Self {
+            enabled: true,
+            max_count: 4,
+            teams: vec![
+                "backend".to_string(),
+                "frontend".to_string(),
+                "tests".to_string(),
+                "docs".to_string(),
+            ],
+            engines,
+        }
+    }
+}
+
+/// Bootstrap settings.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct BootstrapConfig {
+    pub enabled: bool,
+    pub max_iterations: u32,
+    pub max_files: u32,
+    pub timeout_secs: u64,
+    pub require_human_approval: bool,
+}
+
+impl Default for BootstrapConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            max_iterations: 5,
+            max_files: 10_000,
+            timeout_secs: 300,
+            require_human_approval: true,
+        }
+    }
+}
+
 /// Configuration error.
 #[derive(Debug, thiserror::Error)]
 pub enum ConfigError {
@@ -300,6 +388,20 @@ impl BratConfig {
                     other
                 )));
             }
+        }
+
+        // Validate bootstrap config
+        if self.bootstrap.max_iterations == 0 {
+            return Err(ConfigError::ValidationError(
+                "bootstrap.max_iterations must be > 0".to_string(),
+            ));
+        }
+
+        // Validate swimlanes config
+        if self.swimlanes.enabled && self.swimlanes.teams.is_empty() {
+            return Err(ConfigError::ValidationError(
+                "swimlanes.teams cannot be empty when enabled".to_string(),
+            ));
         }
 
         Ok(())

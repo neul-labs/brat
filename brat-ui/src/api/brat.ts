@@ -4,13 +4,20 @@ import type {
   Convoy,
   Task,
   Session,
-  MayorStatus,
-  MayorAskResponse,
-  MayorHistoryResponse,
+  MetaStatus,
+  MetaAskResponse,
+  MetaHistoryResponse,
   SessionLogsResponse,
   CreateConvoyRequest,
   CreateTaskRequest,
   UpdateTaskRequest,
+  BootstrapResult,
+  ConsistencyCheckResult,
+  Inconsistency,
+  KbSearchResult,
+  KbNote,
+  PhaseStatus,
+  ReviewTask,
 } from '../types/brat';
 
 // Use relative URL for dev server proxy, or absolute URL for production
@@ -137,36 +144,96 @@ export const bratApi = {
     return apiRequest(`${API_BASE}/repos/${repoId}/sessions/${sessionId}/logs?lines=${lines}`);
   },
 
-  // Mayor management
-  async getMayorStatus(repoId: string): Promise<MayorStatus> {
-    return apiRequest(`${API_BASE}/repos/${repoId}/mayor/status`);
+  // Meta management
+  async getMetaStatus(repoId: string): Promise<MetaStatus> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/meta/status`);
   },
 
-  async startMayor(
+  async startMeta(
     repoId: string,
     message?: string
   ): Promise<{ session_id: string; response: string[] }> {
-    return apiRequest(`${API_BASE}/repos/${repoId}/mayor/start`, {
+    return apiRequest(`${API_BASE}/repos/${repoId}/meta/start`, {
       method: 'POST',
       body: JSON.stringify({ message }),
     });
   },
 
-  async stopMayor(repoId: string): Promise<{ success: boolean }> {
-    return apiRequest(`${API_BASE}/repos/${repoId}/mayor/stop`, {
+  async stopMeta(repoId: string): Promise<{ success: boolean }> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/meta/stop`, {
       method: 'POST',
     });
   },
 
-  async askMayor(repoId: string, message: string): Promise<MayorAskResponse> {
-    return apiRequest(`${API_BASE}/repos/${repoId}/mayor/ask`, {
+  async askMeta(repoId: string, message: string): Promise<MetaAskResponse> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/meta/ask`, {
       method: 'POST',
       body: JSON.stringify({ message }),
     });
   },
 
-  async getMayorHistory(repoId: string, lines: number = 50): Promise<MayorHistoryResponse> {
-    return apiRequest(`${API_BASE}/repos/${repoId}/mayor/history?lines=${lines}`);
+  async getMetaHistory(repoId: string, lines: number = 50): Promise<MetaHistoryResponse> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/meta/history?lines=${lines}`);
+  },
+
+  // Bootstrap
+  async getBootstrapStatus(repoId: string): Promise<{ running: boolean; result?: BootstrapResult }> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/bootstrap/status`);
+  },
+
+  async runBootstrap(repoId: string): Promise<BootstrapResult> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/bootstrap/run`, {
+      method: 'POST',
+    });
+  },
+
+  // Consistency
+  async getConsistencyScore(repoId: string): Promise<ConsistencyCheckResult> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/kb/score`);
+  },
+
+  async getInconsistencies(repoId: string): Promise<Inconsistency[]> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/kb/inconsistencies`);
+  },
+
+  // KB
+  async kbSearch(repoId: string, query: string, noteType?: string): Promise<KbSearchResult[]> {
+    const params = new URLSearchParams();
+    params.set('q', query);
+    if (noteType) params.set('type', noteType);
+    return apiRequest(`${API_BASE}/repos/${repoId}/kb/search?${params.toString()}`);
+  },
+
+  async listProductNotes(repoId: string): Promise<KbNote[]> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/kb/product`);
+  },
+
+  async listArchitectureNotes(repoId: string): Promise<KbNote[]> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/kb/architecture`);
+  },
+
+  // Pipeline
+  async getPipelineStatus(repoId: string): Promise<PhaseStatus[]> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/pipeline`);
+  },
+
+  // Review
+  async getPendingReviews(repoId: string): Promise<ReviewTask[]> {
+    return apiRequest(`${API_BASE}/repos/${repoId}/review/pending`);
+  },
+
+  async approveTask(repoId: string, taskId: string, comment?: string): Promise<void> {
+    await apiRequest(`${API_BASE}/repos/${repoId}/review/${taskId}/approve`, {
+      method: 'POST',
+      body: JSON.stringify({ comment }),
+    });
+  },
+
+  async rejectTask(repoId: string, taskId: string, reason: string): Promise<void> {
+    await apiRequest(`${API_BASE}/repos/${repoId}/review/${taskId}/reject`, {
+      method: 'POST',
+      body: JSON.stringify({ reason }),
+    });
   },
 };
 

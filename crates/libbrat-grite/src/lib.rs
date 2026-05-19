@@ -6,7 +6,7 @@
 //! # Example
 //!
 //! ```ignore
-//! use libbrat_gritee::{GriteeClient, TaskStatus};
+//! use libbrat_grite::{GriteeClient, TaskStatus};
 //!
 //! let client = GriteeClient::new("/path/to/repo");
 //!

@@ -26,9 +26,34 @@ const routes = [
     component: () => import('../views/Sessions.vue'),
   },
   {
-    path: '/mayor',
-    name: 'Mayor',
-    component: () => import('../views/Mayor.vue'),
+    path: '/meta',
+    name: 'Meta',
+    component: () => import('../views/Meta.vue'),
+  },
+  {
+    path: '/bootstrap',
+    name: 'Bootstrap',
+    component: () => import('../views/Bootstrap.vue'),
+  },
+  {
+    path: '/consistency',
+    name: 'Consistency',
+    component: () => import('../views/Consistency.vue'),
+  },
+  {
+    path: '/pipeline',
+    name: 'Pipeline',
+    component: () => import('../views/Pipeline.vue'),
+  },
+  {
+    path: '/review',
+    name: 'Review',
+    component: () => import('../views/Review.vue'),
+  },
+  {
+    path: '/kb',
+    name: 'KB',
+    component: () => import('../views/Kb.vue'),
   },
 ];
 

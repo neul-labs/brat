@@ -6,6 +6,7 @@
 mod config;
 
 pub use config::{
-    BratConfig, BratdConfig, ConfigError, EngineConfig, InterventionsConfig, LocksConfig,
-    LogsConfig, RefineryConfig, ReposConfig, RolesConfig, SwarmConfig, TmuxConfig,
+    BootstrapConfig, BratConfig, BratdConfig, ConfigError, EngineConfig, InterventionsConfig,
+    KbConfig, LocksConfig, LogsConfig, RefineryConfig, ReposConfig, RolesConfig, SwimlanesConfig,
+    SwarmConfig, TmuxConfig,
 };

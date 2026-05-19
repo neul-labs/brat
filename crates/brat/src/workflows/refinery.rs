@@ -8,7 +8,7 @@ use std::process::Command;
 use std::sync::Arc;
 
 use libbrat_config::BratConfig;
-use libbrat_gritee::{GriteeClient, Task, TaskStatus};
+use libbrat_grite::{GriteeClient, Task, TaskStatus};
 use serde::Serialize;
 
 use super::error::WorkflowError;

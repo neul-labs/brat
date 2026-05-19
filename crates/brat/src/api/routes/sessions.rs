@@ -4,7 +4,7 @@ use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use libbrat_gritee::SessionStatus;
+use libbrat_grite::SessionStatus;
 use serde::{Deserialize, Serialize};
 use std::process::Command;
 

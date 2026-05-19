@@ -7,6 +7,7 @@
 pub mod routes;
 pub mod server;
 pub mod state;
+pub mod watcher;
 
 pub use server::run_server;
-pub use state::{DaemonState, RepoContext};
+pub use state::DaemonState;

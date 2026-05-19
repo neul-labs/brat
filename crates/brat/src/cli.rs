@@ -72,13 +72,28 @@ pub enum Command {
     #[command(subcommand)]
     Workflow(WorkflowCommand),
 
-    /// AI-driven Mayor orchestrator
+    /// AI-driven Meta orchestrator
     #[command(subcommand)]
-    Mayor(MayorCommand),
+    Meta(MetaCommand),
 
     /// Daemon management (start/stop/status)
     #[command(subcommand)]
     Daemon(DaemonCommand),
+
+    /// Knowledge base operations
+    #[command(subcommand)]
+    Kb(KbCommand),
+
+    /// Bootstrap operations
+    #[command(subcommand)]
+    Bootstrap(BootstrapCommand),
+
+    /// Skill management
+    #[command(subcommand)]
+    Skill(SkillCommand),
+
+    /// MCP server
+    Mcp(McpArgs),
 }
 
 /// Arguments for the init command
@@ -99,6 +114,10 @@ pub struct InitArgs {
     /// Don't create/update AGENTS.md
     #[arg(long)]
     pub no_agents_md: bool,
+
+    /// Don't install git hooks
+    #[arg(long)]
+    pub no_hooks: bool,
 }
 
 /// Arguments for the status command
@@ -511,60 +530,176 @@ fn parse_var(s: &str) -> Result<(String, String), String> {
     Ok((parts[0].to_string(), parts[1].to_string()))
 }
 
-/// Mayor subcommands
+/// Meta subcommands
 #[derive(Subcommand, Debug)]
-pub enum MayorCommand {
-    /// Start the Mayor orchestrator
-    Start(MayorStartArgs),
+pub enum MetaCommand {
+    /// Start the Meta orchestrator
+    Start(MetaStartArgs),
 
-    /// Send a message to the Mayor
-    Ask(MayorAskArgs),
+    /// Send a message to the Meta Agent
+    Ask(MetaAskArgs),
 
-    /// Check Mayor status
-    Status(MayorStatusArgs),
+    /// Check Meta status
+    Status(MetaStatusArgs),
 
-    /// View Mayor output
-    Tail(MayorTailArgs),
+    /// View Meta output
+    Tail(MetaTailArgs),
 
-    /// Stop the Mayor
-    Stop(MayorStopArgs),
+    /// Stop the Meta Agent
+    Stop(MetaStopArgs),
 }
 
-/// Arguments for mayor start
+/// Arguments for meta start
 #[derive(Parser, Debug)]
-pub struct MayorStartArgs {
-    /// Initial message/instruction for the Mayor
+pub struct MetaStartArgs {
+    /// Initial message/instruction for the Meta Agent
     #[arg(long, short = 'm')]
     pub message: Option<String>,
 }
 
-/// Arguments for mayor ask
+/// Arguments for meta ask
 #[derive(Parser, Debug)]
-pub struct MayorAskArgs {
-    /// Message to send to the Mayor
+pub struct MetaAskArgs {
+    /// Message to send to the Meta Agent
     pub message: String,
 }
 
-/// Arguments for mayor status
+/// Arguments for meta status
 #[derive(Parser, Debug)]
-pub struct MayorStatusArgs {
+pub struct MetaStatusArgs {
     // No additional arguments needed
 }
 
-/// Arguments for mayor tail
+/// Arguments for meta tail
 #[derive(Parser, Debug)]
-pub struct MayorTailArgs {
+pub struct MetaTailArgs {
     /// Number of lines to show
     #[arg(long, short = 'n', default_value = "50")]
     pub lines: usize,
 }
 
-/// Arguments for mayor stop
+/// Arguments for meta stop
 #[derive(Parser, Debug)]
-pub struct MayorStopArgs {
+pub struct MetaStopArgs {
     /// Force kill instead of graceful stop
     #[arg(long)]
     pub force: bool,
+}
+
+/// Knowledge base subcommands
+#[derive(Subcommand, Debug)]
+pub enum KbCommand {
+    /// Search the knowledge base
+    Search(KbSearchArgs),
+    /// List product notes
+    Product(KbProductArgs),
+    /// List architecture notes
+    Architecture(KbArchitectureArgs),
+    /// Show consistency score
+    Score(KbScoreArgs),
+    /// List inconsistencies
+    Inconsistencies(KbInconsistenciesArgs),
+    /// Sync from filesystem and run consistency check
+    Check(KbCheckArgs),
+    /// Open a note in $EDITOR and sync after save
+    Edit(KbEditArgs),
+}
+
+/// Arguments for kb search
+#[derive(Parser, Debug)]
+pub struct KbSearchArgs {
+    /// Search query
+    pub query: String,
+    /// Filter by note type
+    #[arg(long)]
+    pub note_type: Option<String>,
+}
+
+/// Arguments for kb product
+#[derive(Parser, Debug)]
+pub struct KbProductArgs {
+    // No additional arguments needed
+}
+
+/// Arguments for kb architecture
+#[derive(Parser, Debug)]
+pub struct KbArchitectureArgs {
+    // No additional arguments needed
+}
+
+/// Arguments for kb score
+#[derive(Parser, Debug)]
+pub struct KbScoreArgs {
+    // No additional arguments needed
+}
+
+/// Arguments for kb inconsistencies
+#[derive(Parser, Debug)]
+pub struct KbInconsistenciesArgs {
+    // No additional arguments needed
+}
+
+/// Arguments for kb check
+#[derive(Parser, Debug)]
+pub struct KbCheckArgs {
+    /// Minimum consistency score required (0-100). Fails with exit code 1 if not met.
+    #[arg(long)]
+    pub min_score: Option<u8>,
+}
+
+/// Arguments for kb edit
+#[derive(Parser, Debug)]
+pub struct KbEditArgs {
+    /// Note slug to edit
+    pub slug: String,
+
+    /// Skip consistency check after editing
+    #[arg(long)]
+    pub no_check: bool,
+}
+
+/// Bootstrap subcommands
+#[derive(Subcommand, Debug)]
+pub enum BootstrapCommand {
+    /// Run bootstrap on existing repo
+    Run(BootstrapRunArgs),
+}
+
+/// Arguments for bootstrap run
+#[derive(Parser, Debug)]
+pub struct BootstrapRunArgs {
+    /// Max iterations for consistency fix attempts
+    #[arg(long, default_value = "5")]
+    pub max_iterations: u32,
+}
+
+/// Skill subcommands
+#[derive(Subcommand, Debug)]
+pub enum SkillCommand {
+    /// Install all brat skills
+    Install(SkillInstallArgs),
+    /// List embedded skills
+    List(SkillListArgs),
+}
+
+/// Arguments for skill install
+#[derive(Parser, Debug)]
+pub struct SkillInstallArgs {
+    /// Force reinstall even if already installed
+    #[arg(long)]
+    pub force: bool,
+}
+
+/// Arguments for skill list
+#[derive(Parser, Debug)]
+pub struct SkillListArgs {
+    // No additional arguments needed
+}
+
+/// Arguments for MCP server
+#[derive(Parser, Debug)]
+pub struct McpArgs {
+    // No additional arguments needed
 }
 
 /// Daemon subcommands

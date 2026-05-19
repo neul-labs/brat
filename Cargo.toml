@@ -7,6 +7,11 @@ members = [
     "crates/libbrat-worktree",
     "crates/libbrat-session",
     "crates/libbrat-workflow",
+    "crates/libbrat-kb",
+    "crates/libbrat-swimlane",
+    "crates/libbrat-lib",
+    "crates/brat-skills",
+    "crates/brat-mcp",
     "crates/brat",
 ]
 
@@ -44,6 +49,15 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 base64 = "0.22"
 serde_yaml = "0.9"
 futures-util = "0.3"
+notify = "6.1"
+
+# External knowledge base
+zkb-lib = { path = "../zkb/crates/zkb-lib" }
+
+# MCP
+rmcp = { version = "1.5", features = ["server", "macros", "transport-io"] }
+schemars = "1.0"
+rust-embed = "8.0"
 
 # Internal crates
 libbrat-engine = { version = "0.1.0", path = "crates/libbrat-engine" }
@@ -52,3 +66,8 @@ libbrat-grite = { version = "0.1.0", path = "crates/libbrat-grite" }
 libbrat-worktree = { version = "0.1.0", path = "crates/libbrat-worktree" }
 libbrat-session = { version = "0.1.0", path = "crates/libbrat-session" }
 libbrat-workflow = { version = "0.1.0", path = "crates/libbrat-workflow" }
+libbrat-kb = { version = "0.1.0", path = "crates/libbrat-kb" }
+libbrat-swimlane = { version = "0.1.0", path = "crates/libbrat-swimlane" }
+libbrat-lib = { version = "0.1.0", path = "crates/libbrat-lib" }
+brat-skills = { version = "0.1.0", path = "crates/brat-skills" }
+brat-mcp = { version = "0.1.0", path = "crates/brat-mcp" }

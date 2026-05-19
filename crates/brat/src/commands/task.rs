@@ -1,4 +1,4 @@
-use libbrat_gritee::{DependencyType, TaskStatus};
+use libbrat_grite::{DependencyType, TaskStatus};
 use serde::Serialize;
 
 use crate::cli::{

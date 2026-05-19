@@ -39,7 +39,7 @@ pub enum WorkflowError {
 
     /// Failed to create convoy/task in Grite.
     #[error("gritee error: {0}")]
-    GriteeError(#[from] libbrat_gritee::GriteeError),
+    GriteeError(#[from] libbrat_grite::GriteeError),
 
     /// Workflow directory not found.
     #[error("workflow directory not found: {0}")]

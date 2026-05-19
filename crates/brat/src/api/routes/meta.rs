@@ -1,68 +1,68 @@
-//! Mayor API endpoints.
+//! Meta API endpoints.
 //!
-//! Provides HTTP endpoints for interacting with the AI Mayor orchestrator.
+//! Provides HTTP endpoints for interacting with the AI Meta orchestrator.
 
 use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use axum::routing::{get, post};
 use axum::{Json, Router};
-use libbrat_engine::{Engine, MayorEngine, SpawnSpec};
+use libbrat_engine::{Engine, MetaEngine, SpawnSpec};
 use serde::{Deserialize, Serialize};
 
 use crate::api::state::DaemonState;
 
 use super::status::ErrorResponse;
 
-/// Mayor status response.
+/// Meta status response.
 #[derive(Serialize)]
-pub struct MayorStatusResponse {
-    /// Whether the Mayor is currently active.
+pub struct MetaStatusResponse {
+    /// Whether the Meta is currently active.
     pub active: bool,
     /// Session ID if active.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub session_id: Option<String>,
 }
 
-/// Request to start the Mayor.
+/// Request to start the Meta.
 #[derive(Deserialize, Default)]
-pub struct StartMayorRequest {
+pub struct StartMetaRequest {
     /// Optional initial message.
     pub message: Option<String>,
 }
 
-/// Response from starting the Mayor.
+/// Response from starting the Meta.
 #[derive(Serialize)]
-pub struct StartMayorResponse {
+pub struct StartMetaResponse {
     /// Session ID.
     pub session_id: String,
     /// Initial response lines.
     pub response: Vec<String>,
 }
 
-/// Request to ask the Mayor a question.
+/// Request to ask the Meta a question.
 #[derive(Deserialize)]
-pub struct AskMayorRequest {
+pub struct AskMetaRequest {
     /// Message to send.
     pub message: String,
 }
 
-/// Response from asking the Mayor.
+/// Response from asking the Meta.
 #[derive(Serialize)]
-pub struct AskMayorResponse {
-    /// Response lines from the Mayor.
+pub struct AskMetaResponse {
+    /// Response lines from the Meta.
     pub response: Vec<String>,
 }
 
-/// Response from stopping the Mayor.
+/// Response from stopping the Meta.
 #[derive(Serialize)]
-pub struct StopMayorResponse {
+pub struct StopMetaResponse {
     /// Whether the stop was successful.
     pub success: bool,
 }
 
-/// Query parameters for getting Mayor history.
+/// Query parameters for getting Meta history.
 #[derive(Deserialize, Default)]
-pub struct MayorHistoryQuery {
+pub struct MetaHistoryQuery {
     /// Number of lines to return (default: 50).
     #[serde(default = "default_history_lines")]
     pub lines: usize,
@@ -72,18 +72,18 @@ fn default_history_lines() -> usize {
     50
 }
 
-/// Response with Mayor conversation history.
+/// Response with Meta conversation history.
 #[derive(Serialize)]
-pub struct MayorHistoryResponse {
+pub struct MetaHistoryResponse {
     /// Conversation history lines.
     pub lines: Vec<String>,
 }
 
-/// GET /api/v1/repos/:repo_id/mayor/status
-async fn get_mayor_status(
+/// GET /api/v1/repos/:repo_id/meta/status
+async fn get_meta_status(
     State(state): State<DaemonState>,
     Path(repo_id): Path<String>,
-) -> Result<Json<MayorStatusResponse>, (StatusCode, Json<ErrorResponse>)> {
+) -> Result<Json<MetaStatusResponse>, (StatusCode, Json<ErrorResponse>)> {
     let ctx = state.get_repo(&repo_id).await.ok_or_else(|| {
         (
             StatusCode::NOT_FOUND,
@@ -93,19 +93,19 @@ async fn get_mayor_status(
         )
     })?;
 
-    let engine = MayorEngine::new(ctx.path.clone());
+    let engine = MetaEngine::new(ctx.path.clone());
     let active = engine.is_active();
     let session_id = engine.current_session_id();
 
-    Ok(Json(MayorStatusResponse { active, session_id }))
+    Ok(Json(MetaStatusResponse { active, session_id }))
 }
 
-/// POST /api/v1/repos/:repo_id/mayor/start
-async fn start_mayor(
+/// POST /api/v1/repos/:repo_id/meta/start
+async fn start_meta(
     State(state): State<DaemonState>,
     Path(repo_id): Path<String>,
-    Json(req): Json<StartMayorRequest>,
-) -> Result<(StatusCode, Json<StartMayorResponse>), (StatusCode, Json<ErrorResponse>)> {
+    Json(req): Json<StartMetaRequest>,
+) -> Result<(StatusCode, Json<StartMetaResponse>), (StatusCode, Json<ErrorResponse>)> {
     let ctx = state.get_repo(&repo_id).await.ok_or_else(|| {
         (
             StatusCode::NOT_FOUND,
@@ -115,14 +115,14 @@ async fn start_mayor(
         )
     })?;
 
-    let engine = MayorEngine::new(ctx.path.clone());
+    let engine = MetaEngine::new(ctx.path.clone());
 
     // Check if already active
     if engine.is_active() {
         return Err((
             StatusCode::CONFLICT,
             Json(ErrorResponse {
-                error: "Mayor session already active - stop it first".to_string(),
+                error: "Meta session already active - stop it first".to_string(),
             }),
         ));
     }
@@ -131,12 +131,12 @@ async fn start_mayor(
     let spec = SpawnSpec::new(req.message.unwrap_or_default())
         .working_dir(ctx.path.clone());
 
-    // Spawn the Mayor (this is async)
+    // Spawn the Meta (this is async)
     let result = engine.spawn(spec).await.map_err(|e| {
         (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(ErrorResponse {
-                error: format!("Failed to start Mayor: {}", e),
+                error: format!("Failed to start Meta: {}", e),
             }),
         )
     })?;
@@ -146,18 +146,18 @@ async fn start_mayor(
 
     Ok((
         StatusCode::CREATED,
-        Json(StartMayorResponse {
+        Json(StartMetaResponse {
             session_id: result.session_id,
             response,
         }),
     ))
 }
 
-/// POST /api/v1/repos/:repo_id/mayor/stop
-async fn stop_mayor(
+/// POST /api/v1/repos/:repo_id/meta/stop
+async fn stop_meta(
     State(state): State<DaemonState>,
     Path(repo_id): Path<String>,
-) -> Result<Json<StopMayorResponse>, (StatusCode, Json<ErrorResponse>)> {
+) -> Result<Json<StopMetaResponse>, (StatusCode, Json<ErrorResponse>)> {
     let ctx = state.get_repo(&repo_id).await.ok_or_else(|| {
         (
             StatusCode::NOT_FOUND,
@@ -167,26 +167,26 @@ async fn stop_mayor(
         )
     })?;
 
-    let engine = MayorEngine::new(ctx.path.clone());
+    let engine = MetaEngine::new(ctx.path.clone());
 
     engine.stop_session().map_err(|e| {
         (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(ErrorResponse {
-                error: format!("Failed to stop Mayor: {}", e),
+                error: format!("Failed to stop Meta: {}", e),
             }),
         )
     })?;
 
-    Ok(Json(StopMayorResponse { success: true }))
+    Ok(Json(StopMetaResponse { success: true }))
 }
 
-/// POST /api/v1/repos/:repo_id/mayor/ask
-async fn ask_mayor(
+/// POST /api/v1/repos/:repo_id/meta/ask
+async fn ask_meta(
     State(state): State<DaemonState>,
     Path(repo_id): Path<String>,
-    Json(req): Json<AskMayorRequest>,
-) -> Result<Json<AskMayorResponse>, (StatusCode, Json<ErrorResponse>)> {
+    Json(req): Json<AskMetaRequest>,
+) -> Result<Json<AskMetaResponse>, (StatusCode, Json<ErrorResponse>)> {
     let ctx = state.get_repo(&repo_id).await.ok_or_else(|| {
         (
             StatusCode::NOT_FOUND,
@@ -196,14 +196,14 @@ async fn ask_mayor(
         )
     })?;
 
-    let engine = MayorEngine::new(ctx.path.clone());
+    let engine = MetaEngine::new(ctx.path.clone());
 
     // Check if active
     if !engine.is_active() {
         return Err((
             StatusCode::BAD_REQUEST,
             Json(ErrorResponse {
-                error: "Mayor not active - start it first".to_string(),
+                error: "Meta not active - start it first".to_string(),
             }),
         ));
     }
@@ -212,20 +212,20 @@ async fn ask_mayor(
         (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(ErrorResponse {
-                error: format!("Failed to send message to Mayor: {}", e),
+                error: format!("Failed to send message to Meta: {}", e),
             }),
         )
     })?;
 
-    Ok(Json(AskMayorResponse { response }))
+    Ok(Json(AskMetaResponse { response }))
 }
 
-/// GET /api/v1/repos/:repo_id/mayor/history
-async fn get_mayor_history(
+/// GET /api/v1/repos/:repo_id/meta/history
+async fn get_meta_history(
     State(state): State<DaemonState>,
     Path(repo_id): Path<String>,
-    Query(query): Query<MayorHistoryQuery>,
-) -> Result<Json<MayorHistoryResponse>, (StatusCode, Json<ErrorResponse>)> {
+    Query(query): Query<MetaHistoryQuery>,
+) -> Result<Json<MetaHistoryResponse>, (StatusCode, Json<ErrorResponse>)> {
     let ctx = state.get_repo(&repo_id).await.ok_or_else(|| {
         (
             StatusCode::NOT_FOUND,
@@ -235,26 +235,26 @@ async fn get_mayor_history(
         )
     })?;
 
-    let engine = MayorEngine::new(ctx.path.clone());
+    let engine = MetaEngine::new(ctx.path.clone());
 
     let lines = engine.tail(query.lines).map_err(|e| {
         (
             StatusCode::INTERNAL_SERVER_ERROR,
             Json(ErrorResponse {
-                error: format!("Failed to get Mayor history: {}", e),
+                error: format!("Failed to get Meta history: {}", e),
             }),
         )
     })?;
 
-    Ok(Json(MayorHistoryResponse { lines }))
+    Ok(Json(MetaHistoryResponse { lines }))
 }
 
-/// Build Mayor routes.
+/// Build Meta routes.
 pub fn routes() -> Router<DaemonState> {
     Router::new()
-        .route("/mayor/status", get(get_mayor_status))
-        .route("/mayor/start", post(start_mayor))
-        .route("/mayor/stop", post(stop_mayor))
-        .route("/mayor/ask", post(ask_mayor))
-        .route("/mayor/history", get(get_mayor_history))
+        .route("/meta/status", get(get_meta_status))
+        .route("/meta/start", post(start_meta))
+        .route("/meta/stop", post(stop_meta))
+        .route("/meta/ask", post(ask_meta))
+        .route("/meta/history", get(get_meta_history))
 }

@@ -2,7 +2,7 @@ use std::path::{Path, PathBuf};
 
 use libbrat_config::BratConfig;
 use libbrat_engine::Engine;
-use libbrat_gritee::GriteeClient;
+use libbrat_grite::GriteeClient;
 use libbrat_session::{MonitorConfig, SessionMonitor};
 use libbrat_worktree::WorktreeManager;
 

@@ -1,6 +1,6 @@
 //! Events emitted by the session monitor.
 
-use libbrat_gritee::SessionStatus;
+use libbrat_grite::SessionStatus;
 
 /// Events emitted by the session monitor for caller observation.
 ///
