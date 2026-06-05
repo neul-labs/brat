@@ -1,6 +1,6 @@
 site_name: Brat Documentation
 site_description: Multi-agent orchestration harness for AI coding agents
-site_url: https://brat.docs.neullabs.com/
+site_url: https://docs.neullabs.com/brat/
 repo_url: https://github.com/neul-labs/brat
 repo_name: neul-labs/brat
 edit_uri: edit/main/documentation/docs/
