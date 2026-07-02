@@ -7,7 +7,7 @@ name = "brat-cli"
 version = "0.1.0"
 description = "Multi-agent harness for AI coding tools — crash-safe state, parallel execution."
 readme = "README.md"
-license = {text = "MIT OR Apache-2.0"}
+license = {text = "MIT"}
 requires-python = ">=3.8"
 authors = [
     { name = "Neul Labs", email = "contact@neullabs.com" },
@@ -18,7 +18,6 @@ classifiers = [
     "Environment :: Console",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
