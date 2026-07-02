@@ -5,10 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "brat-cli"
 version = "0.1.0"
-description = "Multi-agent coding orchestrator CLI"
+description = "Multi-agent harness for AI coding tools — crash-safe state, parallel execution."
 readme = "README.md"
 license = {text = "MIT OR Apache-2.0"}
 requires-python = ">=3.8"
+authors = [
+    { name = "Neul Labs", email = "contact@neullabs.com" },
+]
 keywords = ["ai", "coding", "agents", "cli", "automation", "claude", "codex", "aider"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -31,9 +34,9 @@ classifiers = [
 brat = "brat_cli:main"
 
 [project.urls]
-Homepage = "https://github.com/neul-labs/brat"
+Homepage = "https://brat.neullabs.com"
 Repository = "https://github.com/neul-labs/brat.git"
-Documentation = "https://github.com/neul-labs/brat#readme"
+Documentation = "https://docs.neullabs.com/brat"
 Issues = "https://github.com/neul-labs/brat/issues"
 
 [tool.setuptools.packages.find]

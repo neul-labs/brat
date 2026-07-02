@@ -1,7 +1,8 @@
 {
   "name": "brat-cli",
   "version": "0.1.0",
-  "description": "Multi-agent coding orchestrator CLI",
+  "description": "Multi-agent harness for AI coding tools — crash-safe state, parallel execution.",
+  "author": "Neul Labs <contact@neullabs.com>",
   "keywords": [
     "ai",
     "coding",
@@ -17,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/neul-labs/brat.git"
   },
-  "homepage": "https://github.com/neul-labs/brat",
+  "homepage": "https://brat.neullabs.com",
   "bugs": {
     "url": "https://github.com/neul-labs/brat/issues"
   },
@@ -29,7 +30,8 @@
   },
   "files": [
     "bin/",
-    "scripts/"
+    "scripts/",
+    "README.md"
   ],
   "os": [
     "darwin",

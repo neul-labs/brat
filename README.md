@@ -9,6 +9,8 @@
 
 Brat is a multi-agent harness that coordinates AI coding tools (Claude Code, Aider, Codex, and more) working in parallel on your codebase. Built on [Gritee](https://github.com/neul-labs/grite), an append-only event log, Brat ensures that even if agents crash, your coordination state is always recoverable and auditable.
 
+**[Site](https://brat.neullabs.com) · [Docs](https://docs.neullabs.com/brat) · [Repository](https://github.com/neul-labs/brat)**
+
 ---
 
 ## See It In Action
@@ -326,6 +328,21 @@ cargo test
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+## Part of the Neul Labs toolchain
+
+Brat is part of the Neul Labs orchestration toolchain:
+
+| Project | Description |
+|---------|-------------|
+| [ringlet](https://github.com/neul-labs/ringlet) | One CLI to rule all your coding agents. |
+| [fastworker](https://github.com/neul-labs/fastworker) | Background tasks in Python with zero infrastructure — no Redis, no RabbitMQ. |
+| [m9m](https://github.com/neul-labs/m9m) | The n8n alternative without the bugs — one Go binary. |
+| [conductor](https://github.com/neul-labs/conductor) | Multi-agent CLI orchestrator for AI coding agents. |
+
+Learn more at [neullabs.com](https://www.neullabs.com).
 
 ---
 
